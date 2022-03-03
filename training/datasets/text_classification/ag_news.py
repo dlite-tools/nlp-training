@@ -59,14 +59,14 @@ class AGNewsDataModule(pl.LightningDataModule):
 
     def generate_batch(self, batch: Any, train: bool = False):
         self.processor.train = train
-        label, texts = zip(*batch)
+        labels, texts = zip(*batch)
         docs = []
         offsets = [0]
-        label = [l - 1 for l in label]
+        labels = [label - 1 for label in labels]
 
         for text in texts:
             doc = self.processor.preprocess(Document(text))
             docs.append(doc.output)
             offsets.append(doc.output.size(0))
 
-        return torch.tensor(label), torch.cat(docs), torch.tensor(offsets[:-1]).cumsum(dim=0)
+        return torch.tensor(labels), torch.cat(docs), torch.tensor(offsets[:-1]).cumsum(dim=0)

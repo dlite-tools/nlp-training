@@ -49,7 +49,7 @@ class TextClassificationTrainer(pl.LightningModule):
         Returns: optimizer for pytorch lighting.
         """
         optimizer = optim.SGD(self.parameters(), lr=5)
-        scheduler = optim.lr_scheduler.StepLR(optimizer, 1.0, gamma=0.1)
+        scheduler = optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.1)
         return [optimizer], [scheduler]
 
     def training_step(self, batch, batch_idx):
