@@ -25,11 +25,13 @@ class VocabTransform(Transformer):
 
     def build_vocab(self, processor: Processor, dataset: Iterable):
         print('Building the Vocab.')
+
         def yield_tokens(dataset: Iterable):
             for _, text in tqdm(dataset):
                 yield [token.output for token in processor.preprocess(Document(text)).tokens]
 
         self.vocab = build_vocab_from_iterator(yield_tokens(dataset), specials=["<unk>"])
+        self.vocab.set_default_index(self.vocab["<unk>"])
 
     def __len__(self):
         return len(self.vocab) if self.vocab is not None else None
