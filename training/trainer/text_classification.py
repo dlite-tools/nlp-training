@@ -34,7 +34,7 @@ class TextClassificationTrainer(pl.LightningModule):
         else:
             self.loss = loss
 
-    def forward(self, x):
+    def forward(self, x, offsets):
         """Model forward pass.
 
         Args:
@@ -42,13 +42,13 @@ class TextClassificationTrainer(pl.LightningModule):
 
         Returns: torch.Tensor
         """
-        return self.model(x)
+        return self.model(x, offsets)
 
     def configure_optimizers(self) -> Any:
         """Configure optimizer for pytorch lighting.
         Returns: optimizer for pytorch lighting.
         """
-        optimizer = optim.Adam(self.parameters())
+        optimizer = optim.SGD(self.parameters(), lr=0.1)
         return optimizer
 
     def training_step(self, batch, batch_idx):
@@ -60,8 +60,8 @@ class TextClassificationTrainer(pl.LightningModule):
 
         Returns: Tensor
         """
-        text, labels = batch
-        output = self.forward(text)
+        labels, text, offsets = batch
+        output = self.forward(text, offsets)
         loss = self.loss(output, labels)
         self.log('train_loss', loss)
         self.train_acc(output, labels)
@@ -79,8 +79,8 @@ class TextClassificationTrainer(pl.LightningModule):
 
         Returns: Tensor
         """
-        text, labels = batch
-        output = self.forward(text)
+        labels, text, offsets = batch
+        output = self.forward(text, offsets)
         loss = self.loss(output, labels)
         self.log('valid_loss', loss, on_epoch=True)
         self.valid_acc(output, labels)
@@ -97,8 +97,8 @@ class TextClassificationTrainer(pl.LightningModule):
             batch_idx (int): batch index.
         Returns: Tensor
         """
-        text, labels = batch
-        output = self.forward(text)
+        labels, text, offsets = batch
+        output = self.forward(text, offsets)
         loss = self.loss(output, labels)
         self.log('test_loss', loss, on_epoch=True)
         self.test_acc(output, labels)
