@@ -23,8 +23,8 @@ if __name__ == "__main__":
     NUMBER_CLASSES = 4
     EMBED_DIM = 100
 
-    model_checkpoint = ModelCheckpoint(monitor="val_CrossEntropyLoss", mode="min", save_weights_only=True)
-    early_stop_callback = EarlyStopping(monitor="val_CrossEntropyLoss", mode="min", patience=4)
+    model_checkpoint = ModelCheckpoint(monitor="valid_loss", mode="min", save_weights_only=True)
+    early_stop_callback = EarlyStopping(monitor="valid_loss", mode="min", patience=4)
     mf_logger = MLFlowLogger(
         experiment_name="AG News - Text Classification",
         run_name="Baseline",
