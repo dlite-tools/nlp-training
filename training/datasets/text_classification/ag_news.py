@@ -1,4 +1,5 @@
-from typing import Any, Optional
+"""AG News Module."""
+from typing import Any, Optional, Tuple
 
 import pytorch_lightning as pl
 import torch
@@ -45,19 +46,32 @@ class AGNewsDataModule(pl.LightningDataModule):
                                                             generator=torch.Generator().manual_seed(42))
 
     def train_dataloader(self):
-        """Data loader for training data."""
+        """Apply data loader for training data."""
         return DataLoader(self.train_dataset, self.batch_size, shuffle=True,
                           collate_fn=lambda batch: self.generate_batch(batch, True))
 
     def val_dataloader(self):
-        """Data loader for validation data."""
+        """Apply data loader for validation data."""
         return DataLoader(self.val_dataset, self.batch_size, collate_fn=self.generate_batch)
 
     def test_dataloader(self):
-        """Data loader for testing data."""
+        """Apply data loader for testing data."""
         return DataLoader(self.test_dataset, self.batch_size, collate_fn=self.generate_batch)
 
-    def generate_batch(self, batch: Any, train: bool = False):
+    def generate_batch(self, batch: Any, train: bool = False) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Generate batch.
+
+        Parameters
+        ----------
+        batch : Any
+            Batch returned from dataset.
+        train : bool
+            If `True`, data augmentation will be applied if given to Processor, else will not be.
+
+        Returns
+        -------
+        Tuple[torch.Tensor, torch.Tensor, torch.Tensor]
+        """
         self.processor.train = train
         labels, texts = zip(*batch)
         docs = []

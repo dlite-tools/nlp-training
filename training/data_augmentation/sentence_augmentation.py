@@ -1,3 +1,5 @@
+"""Sentence Augmentation."""
+
 import nltk
 import nlpaug.augmenter.word as naw
 from nlpiper.core import Document
@@ -15,5 +17,16 @@ class SentenceAugmentation(Transformer):
     aug = naw.SynonymAug()
 
     def __call__(self, doc: Document) -> Document:
+        """Sentence Augmentation.
+
+        Parameters
+        ----------
+        doc : Document
+            Pydantic document object with all document metadata.
+
+        Returns
+        -------
+        Document
+        """
         doc.cleaned = self.aug.augment(doc.cleaned)
         return doc

@@ -9,7 +9,7 @@ from inference.data_processors.transformers.base import (
 
 
 class Processor:
-    """Apply pre-processing and post-processing to samples."""
+    """Apply pre-processing to samples."""
 
     train = False
 

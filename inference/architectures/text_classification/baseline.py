@@ -1,20 +1,41 @@
+"""Baseline Model."""
+
+import torch
 from torch import nn
 
 
 class BaselineModel(nn.Module):
+    """Baseline Model."""
 
-    def __init__(self, vocab_size, embed_dim, num_class):
+    def __init__(self, vocab_size: int, embed_dim: int, num_class: int):
+        """Baseline Model.
+
+        Parameters
+        ----------
+        vocab_size : int
+            Vocabulary size.
+        embed_dim : int
+            Embedding size.
+        num_class : int
+            Number of classes.
+        """
         super(BaselineModel, self).__init__()
         self.embedding = nn.EmbeddingBag(vocab_size, embed_dim, sparse=True)
         self.fc = nn.Linear(embed_dim, num_class)
-        self.init_weights()
 
-    def init_weights(self):
-        initrange = 0.5
-        self.embedding.weight.data.uniform_(-initrange, initrange)
-        self.fc.weight.data.uniform_(-initrange, initrange)
-        self.fc.bias.data.zero_()
+    def forward(self, x: torch.Tensor, offsets: torch.Tensor):
+        """Model inference.
 
-    def forward(self, text, offsets):
-        embedded = self.embedding(text, offsets)
+        Parameters
+        ----------
+        x : torch.Tensor
+            Sample.
+        offsets : torch.Tensor
+            Document offsets.
+
+        Returns
+        -------
+        torch.Tensor
+        """
+        embedded = self.embedding(x, offsets)
         return self.fc(embedded)

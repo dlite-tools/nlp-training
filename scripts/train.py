@@ -1,3 +1,4 @@
+"""Training script."""
 import os
 
 import nlpiper
