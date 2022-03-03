@@ -1217,7 +1217,7 @@ training = ["pytorch-lightning", "torchtext", "torchmetrics", "mlflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "b654c0d08c07b263cf01b1cbba3656ed84860364da77f937b420fd4dee3d921f"
+content-hash = "45c4a5cb8afc56b01d04048472285de2662f0992ecb82b15856dc9c9db3cae93"
 
 [metadata.files]
 absl-py = [

@@ -14,13 +14,15 @@ pytorch-lightning = { version = "^1.5.10", optional = true }
 torchtext = { version = "^0.11.2", optional = true }
 torchmetrics = { version = "^0.7.2", optional = true }
 mlflow = { version = "^1.24.0", optional = true }
+tqdm = { version = "^4.63.0", optional = true }
 
 [tool.poetry.extras]
 training = [
     "pytorch-lightning",
     "torchtext",
     "torchmetrics",
-    "mlflow"
+    "mlflow",
+    "tqdm"
 ]
 
 [tool.poetry.dev-dependencies]
