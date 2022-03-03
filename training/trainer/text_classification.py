@@ -10,13 +10,17 @@ from torch import optim, nn
 class TextClassificationTrainer(pl.LightningModule):
     """Text Classification Abstract Class."""
 
-    def __init__(self, model: nn.Module, num_class: int, loss: Optional[Any] = None) -> None:
+    def __init__(self, model: nn.Module, num_class: int, loss: Optional[Any] = None):
         """Initialize Text Classification.
 
-        Args:
-            model (nn.Module): Pytorch Model.
-            num_class (int): number of classes.
-            loss (Optional[Any]): Loss function.
+        Parameters
+        ----------
+        model : nn.Module
+            Pytorch Model.
+        num_class : int
+            number of classes.
+        loss : Optional[Any]
+            Loss function.
         """
         super().__init__()
         self.num_class = num_class
@@ -37,16 +41,23 @@ class TextClassificationTrainer(pl.LightningModule):
     def forward(self, x, offsets):
         """Model forward pass.
 
-        Args:
-            x (torch.Tensor): text given to the model for the forward pass.
+        Parameters
+        ----------
+        x : torch.Tensor
+            text given to the model for the forward pass.
 
-        Returns: torch.Tensor
+        Returns
+        -------
+        torch.Tensor
         """
         return self.model(x, offsets)
 
     def configure_optimizers(self) -> Any:
         """Configure optimizer for pytorch lighting.
-        Returns: optimizer for pytorch lighting.
+
+        Returns
+        -------
+        optimizer for pytorch lighting.
         """
         optimizer = optim.SGD(self.parameters(), lr=5)
         scheduler = optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.1)
@@ -55,11 +66,16 @@ class TextClassificationTrainer(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         """Get training step.
 
-        Args:
-            batch (List[Tensor]): Data for training.
-            batch_idx (int): batch index.
+        Parameters
+        ----------
+        batch : List[torch.Tensor]
+            Data for training.
+        batch_idx : int
+            batch index.
 
-        Returns: Tensor
+        Returns
+        -------
+        torch.Tensor
         """
         labels, text, offsets = batch
         output = self.forward(text, offsets)
@@ -74,11 +90,16 @@ class TextClassificationTrainer(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         """Get validation step.
 
-        Args:
-            batch (List[Tensor]): Data for training.
-            batch_idx (int): batch index.
+        Parameters
+        ----------
+        batch : List[torch.Tensor]
+             Data for training.
+        batch_idx : int
+            batch index.
 
-        Returns: Tensor
+        Returns
+        -------
+        torch.Tensor
         """
         labels, text, offsets = batch
         output = self.forward(text, offsets)
@@ -93,10 +114,16 @@ class TextClassificationTrainer(pl.LightningModule):
     def test_step(self, batch, batch_idx):
         """Get test step.
 
-        Args:
-            batch (List[Tensor]): Data for training.
-            batch_idx (int): batch index.
-        Returns: Tensor
+        Parameters
+        ----------
+        batch : List[torch.Tensor]
+            Data for training.
+        batch_idx : int
+            batch index.
+
+        Returns
+        -------
+        torch.Tensor
         """
         labels, text, offsets = batch
         output = self.forward(text, offsets)
