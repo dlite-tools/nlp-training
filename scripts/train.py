@@ -16,6 +16,7 @@ from inference.data_processors.transformers.preprocessing import (
     NLPiperIntegration,
     VocabTransform
 )
+from training.data_augmentation import SentenceAugmentation
 from training.trainer import TextClassificationTrainer
 from training.datasets.text_classification import AGNewsDataModule
 
@@ -33,6 +34,7 @@ if __name__ == "__main__":
 
     vocab = VocabTransform()
     preprocessing = [
+        SentenceAugmentation(),
         NLPiperIntegration(pipeline=nlpiper.core.Compose([
             nlpiper.transformers.cleaners.CleanPunctuation(),
             nlpiper.transformers.tokenizers.MosesTokenizer()

@@ -17,6 +17,7 @@ pytorch-lightning = { version = "^1.5.10", optional = true }
 torchtext = { version = "^0.11.2", optional = true }
 torchmetrics = { version = "^0.7.2", optional = true }
 tqdm = { version = "^4.63.0", optional = true }
+nltk = { version = "^3.7", optional = true }
 
 [tool.poetry.extras]
 training = [
@@ -25,7 +26,8 @@ training = [
     "torchmetrics",
     "tqdm",
     "mlflow",
-    "nlpaug"
+    "nlpaug",
+    "nltk"
 ]
 
 [tool.poetry.dev-dependencies]

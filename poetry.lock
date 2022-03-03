@@ -581,6 +581,28 @@ gensim = ["gensim (>=4.1.2,<5.0.0)"]
 numpy = ["numpy (>=1.22.2,<2.0.0)"]
 
 [[package]]
+name = "nltk"
+version = "3.7"
+description = "Natural Language Toolkit"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+click = "*"
+joblib = "*"
+regex = ">=2021.8.3"
+tqdm = "*"
+
+[package.extras]
+all = ["numpy", "pyparsing", "scipy", "matplotlib", "twython", "requests", "scikit-learn", "python-crfsuite"]
+corenlp = ["requests"]
+machine_learning = ["numpy", "python-crfsuite", "scikit-learn", "scipy"]
+plot = ["matplotlib"]
+tgrep = ["pyparsing"]
+twitter = ["twython"]
+
+[[package]]
 name = "numpy"
 version = "1.22.2"
 description = "NumPy is the fundamental package for array computing with Python."
@@ -1230,7 +1252,7 @@ training = ["pytorch-lightning", "torchtext", "torchmetrics", "tqdm", "mlflow", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "84b9eae84d1024ff570224d1997e6f94efe4d3350c729a9e3d3ff8d1c86e8eb9"
+content-hash = "17f642fb8dc94fab787de248b025dc6c24ac5f4891a5ab56d59386f9e43574b8"
 
 [metadata.files]
 absl-py = [
@@ -1779,6 +1801,10 @@ nlpaug = [
 nlpiper = [
     {file = "nlpiper-0.2.0-py3-none-any.whl", hash = "sha256:740b57502afa2c43d46657d47a78dba0698b0dedefe84413002ba77af18a0bec"},
     {file = "nlpiper-0.2.0.tar.gz", hash = "sha256:4ac630acd2b3d6ace937d840bda6b7f51bcd9d0aa469f3cf1b530849fdc1ee3e"},
+]
+nltk = [
+    {file = "nltk-3.7-py3-none-any.whl", hash = "sha256:ba3de02490308b248f9b94c8bc1ac0683e9aa2ec49ee78536d8667afb5e3eec8"},
+    {file = "nltk-3.7.zip", hash = "sha256:d6507d6460cec76d70afea4242a226a7542f85c669177b9c7f562b7cf1b05502"},
 ]
 numpy = [
     {file = "numpy-1.22.2-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:515a8b6edbb904594685da6e176ac9fbea8f73a5ebae947281de6613e27f1956"},

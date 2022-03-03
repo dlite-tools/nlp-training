@@ -46,7 +46,8 @@ class AGNewsDataModule(pl.LightningDataModule):
 
     def train_dataloader(self):
         """Data loader for training data."""
-        return DataLoader(self.train_dataset, self.batch_size, shuffle=True, collate_fn=self.generate_batch)
+        return DataLoader(self.train_dataset, self.batch_size, shuffle=True,
+                          collate_fn=lambda batch: self.generate_batch(batch, True))
 
     def val_dataloader(self):
         """Data loader for validation data."""
@@ -56,11 +57,13 @@ class AGNewsDataModule(pl.LightningDataModule):
         """Data loader for testing data."""
         return DataLoader(self.test_dataset, self.batch_size, collate_fn=self.generate_batch)
 
-    def generate_batch(self, batch: Any):
+    def generate_batch(self, batch: Any, train: bool = False):
+        self.processor.train = train
         label, texts = zip(*batch)
         docs = []
         offsets = [0]
         label = [l - 1 for l in label]
+
         for text in texts:
             doc = self.processor.preprocess(Document(text))
             docs.append(doc.output)
