@@ -12,7 +12,10 @@ from pytorch_lightning.callbacks import (
 
 from inference.architectures.text_classification import BaselineModel
 from inference.data_processors.processor import Processor
-from inference.data_processors.transformers.preprocessing.nlpiper_integration import NLPiperIntegration
+from inference.data_processors.transformers.preprocessing import (
+    NLPiperIntegration,
+    VocabTransform
+)
 from training.trainer import TextClassificationTrainer
 from training.datasets.text_classification import AGNewsDataModule
 
@@ -28,18 +31,20 @@ if __name__ == "__main__":
         tracking_uri=os.getenv('MLFLOW_URI')
     )
 
+    vocab = VocabTransform()
     preprocessing = [
         NLPiperIntegration(pipeline=nlpiper.core.Compose([
             nlpiper.transformers.cleaners.CleanPunctuation(),
             nlpiper.transformers.tokenizers.MosesTokenizer()
-        ]))
+        ])),
+        vocab
     ]
     processor = Processor(preprocessing=preprocessing)
 
     data_module = AGNewsDataModule(processor=processor)
 
-    processor.build_vocab(AG_NEWS(split='train'))
-    model = BaselineModel(vocab_size=len(processor._vocab), embed_dim=EMBED_DIM, num_class=NUMBER_CLASSES)
+    vocab.build_vocab(processor, AG_NEWS(split='train'))
+    model = BaselineModel(vocab_size=len(vocab), embed_dim=EMBED_DIM, num_class=NUMBER_CLASSES)
 
     model_trainer = TextClassificationTrainer(
         model=model,

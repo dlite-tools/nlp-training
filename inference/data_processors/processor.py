@@ -1,9 +1,7 @@
 """Processor Module."""
-from typing import Sequence, Iterable, Optional
+from typing import Sequence
 
-import torch
 from nlpiper.core import Document
-from torchtext.vocab import build_vocab_from_iterator, Vocab
 
 from inference.data_processors.transformers.base import (
     Transformer
@@ -15,7 +13,7 @@ class Processor:
 
     train = False
 
-    def __init__(self, preprocessing: Sequence[Transformer], vocab: Optional[Vocab] = None):
+    def __init__(self, preprocessing: Sequence[Transformer]):
         """Apply preprocessing to samples.
 
         Parameters
@@ -24,7 +22,6 @@ class Processor:
             List with transforms to be applied on preprocessing.
         """
         self.preprocessing = preprocessing
-        self._vocab = vocab
 
     def preprocess(self, doc: Document) -> Document:
         """Apply pre-processing to samples.
@@ -46,13 +43,3 @@ class Processor:
             doc = transform(doc)
 
         return doc
-
-    def build_vocab(self, dataset: Iterable):
-        def yield_tokens(dataset: Iterable):
-            for _, text in dataset:
-                yield [token.cleaned for token in self.preprocess(Document(text)).tokens]
-
-        self._vocab = build_vocab_from_iterator(yield_tokens(dataset), specials=["<unk>"])
-
-    def vocab(self, doc: Document):
-        return torch.tensor(self._vocab([token.cleaned for token in doc.tokens]))

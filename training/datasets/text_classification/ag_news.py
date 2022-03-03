@@ -62,8 +62,8 @@ class AGNewsDataModule(pl.LightningDataModule):
         offsets = [0]
         label = [l - 1 for l in label]
         for text in texts:
-            processed_text = self.processor.vocab(self.processor.preprocess(Document(text)))
-            docs.append(processed_text)
-            offsets.append(processed_text.size(0))
+            doc = self.processor.preprocess(Document(text))
+            docs.append(doc.output)
+            offsets.append(doc.output.size(0))
 
         return torch.tensor(label), torch.cat(docs), torch.tensor(offsets[:-1]).cumsum(dim=0)
