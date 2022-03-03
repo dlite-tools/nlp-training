@@ -1,5 +1,5 @@
 ######### BASE Image #########
-FROM python:3.8-buster AS base
+FROM python:3.9-buster AS base
 
 ENV PATH="/poetry/bin:$PATH" \
     POETRY_VERSION="1.1.12" \
@@ -19,7 +19,7 @@ RUN libDeps='ffmpeg libsm6 libxext6' && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/* /tmp/* /var/tmp/* /root/.ssh
 
 ######### PRODUCTION Image #########
-FROM python:3.8-buster AS production
+FROM python:3.9-buster AS production
 
 ENV SERVICE_HOME="/nlp"
 
