@@ -1212,12 +1212,12 @@ docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [extras]
-training = ["pytorch-lightning", "torchtext", "torchmetrics", "mlflow"]
+training = ["pytorch-lightning", "torchtext", "torchmetrics", "mlflow", "tqdm"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "45c4a5cb8afc56b01d04048472285de2662f0992ecb82b15856dc9c9db3cae93"
+content-hash = "4bca34a6f41cfd52f6d12d990a3d403ae5c4360b6e285b08fcc6d9649294fc31"
 
 [metadata.files]
 absl-py = [
