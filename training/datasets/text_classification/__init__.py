@@ -1,1 +1,1 @@
-from ag_news import AGNewsDataModule
+from .ag_news import AGNewsDataModule

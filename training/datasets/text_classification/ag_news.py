@@ -1,9 +1,10 @@
-from typing import Optional
+from typing import Any, Optional
 
 import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader, random_split
 from torchtext.datasets import AG_NEWS
+from torchtext.data.functional import to_map_style_dataset
 from nlpiper.core import Document
 
 from inference.data_processors.processor import Processor
@@ -12,7 +13,7 @@ from inference.data_processors.processor import Processor
 class AGNewsDataModule(pl.LightningDataModule):
     """Generate data loaders for training, validation and testing."""
 
-    def __init__(self, processor: Processor, data_dir: str = '.data', batch_size: int = 32, num_workers: int = 4):
+    def __init__(self, processor: Processor, data_dir: str = '.data', batch_size: int = 32):
         """Field recognition DataModule.
 
         Parameters
@@ -23,19 +24,19 @@ class AGNewsDataModule(pl.LightningDataModule):
             Directory path for the dataset.
         batch_size: int
             Batch size.
-        num_workers: int
-            Number of workers for the data loader.
         """
         super().__init__()
         self.processor = processor
         self.data_dir = data_dir
         self.batch_size = batch_size
-        self.num_workers = num_workers
         self.setup()
 
     def setup(self, stage: Optional[str] = None):
         """Do setup training, validation and test datasets."""
-        train_dataset, self.test_dataset = AG_NEWS(data_dir=self.data_dir, split=("train", "test"))
+        train_iter, test_iter = AG_NEWS(root=self.data_dir, split=("train", "test"))
+
+        train_dataset = to_map_style_dataset(train_iter)
+        self.test_dataset = to_map_style_dataset(test_iter)
         train_len = int(len(train_dataset) * 0.8)
         val_len = len(train_dataset) - train_len
 
@@ -45,19 +46,24 @@ class AGNewsDataModule(pl.LightningDataModule):
 
     def train_dataloader(self):
         """Data loader for training data."""
-        return DataLoader(self.train_dataset, self.batch_size, num_workers=self.num_workers, shuffle=True,
-                          collate_fn=self.generate_batch)
+        return DataLoader(self.train_dataset, self.batch_size, shuffle=True, collate_fn=self.generate_batch)
 
     def val_dataloader(self):
         """Data loader for validation data."""
-        return DataLoader(self.val_dataset, self.batch_size, num_workers=self.num_workers,
-                          collate_fn=self.generate_batch)
+        return DataLoader(self.val_dataset, self.batch_size, collate_fn=self.generate_batch)
 
     def test_dataloader(self):
         """Data loader for testing data."""
-        return DataLoader(self.test_dataset, self.batch_size, num_workers=self.num_workers,
-                          collate_fn=self.generate_batch)
+        return DataLoader(self.test_dataset, self.batch_size, collate_fn=self.generate_batch)
 
-    def generate_batch(self, batch):
-        label, text = zip(*batch)
-        return torch.stack(label), torch.stack(text)
+    def generate_batch(self, batch: Any):
+        label, texts = zip(*batch)
+        docs = []
+        offsets = [0]
+        label = [l - 1 for l in label]
+        for text in texts:
+            processed_text = self.processor.vocab(self.processor.preprocess(Document(text)))
+            docs.append(processed_text)
+            offsets.append(processed_text.size(0))
+
+        return torch.tensor(label), torch.cat(docs), torch.tensor(offsets[:-1]).cumsum(dim=0)

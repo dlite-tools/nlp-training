@@ -1,1 +1,1 @@
-from baseline import BaselineModel
+from .baseline import BaselineModel
