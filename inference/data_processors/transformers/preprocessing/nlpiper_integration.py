@@ -3,10 +3,10 @@
 from nlpiper.core.document import Document
 from nlpiper.core.composition import Compose
 
-from inference.data_processors.transformers.base import Transformer
+from inference.data_processors.transformers.base import BaseTransformer
 
 
-class NLPiperIntegration(Transformer):
+class NLPiperIntegration(BaseTransformer):
     """NLPiper integration."""
 
     def __init__(self, pipeline: Compose):

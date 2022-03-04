@@ -4,10 +4,10 @@ import nltk
 import nlpaug.augmenter.word as naw
 from nlpiper.core import Document
 
-from inference.data_processors.transformers.base import Transformer
+from inference.data_processors.transformers.base import BaseTransformer
 
 
-class SentenceAugmentation(Transformer):
+class SentenceAugmentation(BaseTransformer):
     """Randomly change and add similar expression of a word for sentence augmentation."""
 
     _data_aug = True

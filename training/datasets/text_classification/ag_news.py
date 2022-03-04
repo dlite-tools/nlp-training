@@ -58,7 +58,7 @@ class AGNewsDataModule(pl.LightningDataModule):
         """Apply data loader for testing data."""
         return DataLoader(self.test_dataset, self.batch_size, collate_fn=self.generate_batch)
 
-    def generate_batch(self, batch: Any, train: bool = False) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def generate_batch(self, batch: Any, train: bool = False) -> Tuple[torch.Tensor, torch.Tensor]:
         """Generate batch.
 
         Parameters
@@ -70,17 +70,16 @@ class AGNewsDataModule(pl.LightningDataModule):
 
         Returns
         -------
-        Tuple[torch.Tensor, torch.Tensor, torch.Tensor]
+        Tuple[torch.Tensor, torch.Tensor]
         """
         self.processor.train = train
         labels, texts = zip(*batch)
         docs = []
-        offsets = [0]
         labels = [label - 1 for label in labels]
 
         for text in texts:
             doc = self.processor.preprocess(Document(text))
             docs.append(doc.output)
-            offsets.append(doc.output.size(0))
 
-        return torch.tensor(labels), torch.cat(docs), torch.tensor(offsets[:-1]).cumsum(dim=0)
+        docs = torch.nn.utils.rnn.pad_sequence(docs, batch_first=True, padding_value=1)
+        return torch.tensor(labels), docs
