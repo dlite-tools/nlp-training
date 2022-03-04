@@ -561,7 +561,7 @@ requests = ">=2.22.0"
 
 [[package]]
 name = "nlpiper"
-version = "0.2.0"
+version = "0.2.1"
 description = "NLPiper, a lightweight package integrated with a universe of frameworks to pre-process documents."
 category = "main"
 optional = false
@@ -585,7 +585,7 @@ name = "nltk"
 version = "3.7"
 description = "Natural Language Toolkit"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -1247,12 +1247,12 @@ docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [extras]
-training = ["pytorch-lightning", "torchtext", "torchmetrics", "tqdm", "mlflow", "nlpaug"]
+training = ["pytorch-lightning", "torchtext", "torchmetrics", "tqdm", "mlflow", "nlpaug", "nltk"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "17f642fb8dc94fab787de248b025dc6c24ac5f4891a5ab56d59386f9e43574b8"
+content-hash = "df16cead4d176c016038a67b9871964a67badc995a4f083d24cb31de059a6e93"
 
 [metadata.files]
 absl-py = [
@@ -1799,8 +1799,8 @@ nlpaug = [
     {file = "nlpaug-1.1.10-py3-none-any.whl", hash = "sha256:b166ee2c6c317091f4ca4db8055a7f77b53cc7b2a16492f38a0c6ca778e9a5da"},
 ]
 nlpiper = [
-    {file = "nlpiper-0.2.0-py3-none-any.whl", hash = "sha256:740b57502afa2c43d46657d47a78dba0698b0dedefe84413002ba77af18a0bec"},
-    {file = "nlpiper-0.2.0.tar.gz", hash = "sha256:4ac630acd2b3d6ace937d840bda6b7f51bcd9d0aa469f3cf1b530849fdc1ee3e"},
+    {file = "nlpiper-0.2.1-py3-none-any.whl", hash = "sha256:c548d5964e7767b089bf87a2603276551f5fa6de0e47072e8f3f07306d2e3a16"},
+    {file = "nlpiper-0.2.1.tar.gz", hash = "sha256:7e21966ba143b67817b193435618fb32befb36b3e75fbd93f83a144cca6a75f1"},
 ]
 nltk = [
     {file = "nltk-3.7-py3-none-any.whl", hash = "sha256:ba3de02490308b248f9b94c8bc1ac0683e9aa2ec49ee78536d8667afb5e3eec8"},
