@@ -1,0 +1,37 @@
+# IDE config
+.vscode
+.idea/
+
+# Python files
+.mypy_cache
+*__pycache__*
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Test files
+.pytest_cache
+.coverage*
+htmlcov
+junit.xml
+cov.xml
+coverage.xml
+
+# Git Files
+.git*
+
+# Other files
+*.md
+*.http
+
+# mlflow
+mlruns
+
+# torchtext dataset
+.data

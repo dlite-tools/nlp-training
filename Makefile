@@ -1,12 +1,16 @@
-export PYTHONPATH := .:transformer:$(PYTHONPATH)
+# Basic definitions
+export PYTHONPATH := .:$(PYTHONPATH)
 
 PACKAGE_TRAINING=training
 PACKAGE_INFERENCE=inference
 MODULE_SCRIPTS=scripts
-MODULES=$(MODULE_SCRIPTS) $(MODULE_TRANSFORMER) $(PACKAGE_TRAINING) $(PACKAGE_INFERENCE)
-DOC_MODULES=$(MODULE_TRANSFORMER) $(PACKAGE_TRAINING) $(PACKAGE_INFERENCE)
+
+MODULES=$(MODULE_SCRIPTS) $(PACKAGE_TRAINING) $(PACKAGE_INFERENCE)
+DOC_MODULES=$(PACKAGE_TRAINING) $(PACKAGE_INFERENCE)
+
 UNIT_TESTS=tests/unit
 
+# Run test out of Poetry environment
 ifeq ($(CICD), TRUE)
 	PYTEST_FLAGS = -p no:warnings
 else
@@ -14,56 +18,39 @@ else
 	PYTEST_FLAGS = -v -s
 endif
 
-# Check README.md to generate this file
-SSH_FILE := $${HOME}/.ssh/keys/wk_github
+## Scripts to run tests
 
-all: static-tests doc-tests coverage
-
-.PHONY: all
-
-style:
+static-tests:
 	###### Running style analysis ######
 	$(POETRY_ARG) flake8 $(MODULES)
-	$(POETRY_ARG) flake8 $(UNIT_TESTS)
+	# $(POETRY_ARG) flake8 $(UNIT_TESTS)
 
-typecheck:
 	###### Running static type analysis ######
 	$(POETRY_ARG) mypy $(MODULE_SCRIPTS)
 	$(POETRY_ARG) mypy $(PACKAGE_INFERENCE)
 	$(POETRY_ARG) mypy $(PACKAGE_TRAINING)
 
-doccheck:
 	###### Running documentation analysis ######
 	$(POETRY_ARG) pydocstyle $(MODULES)
 
-static-tests: style typecheck doccheck
-
-unit-tests:
-	###### Running unit tests ######
-	$(POETRY_ARG) pytest $(PYTEST_FLAGS) $(UNIT_TESTS)
-
 doc-tests:
-  	###### Running unit tests ######
+	###### Running documentation example as tests ######
 	$(POETRY_ARG) pytest --doctest-modules $(PYTEST_FLAGS) $(DOC_MODULES)
 
 coverage:
-	###### Running coverage analysis ######
+	###### Running unit tests and coverage analysis ######
 	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_INFERENCE) --cov $(PACKAGE_INFERENCE) --cov-report term-missing
 	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_TRAINING) --cov $(PACKAGE_TRAINING) --cov-report term-missing
 
-coverage-html:
-	###### Running coverage analysis with html export ######
-	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_INFERENCE) --cov $(PACKAGE_INFERENCE) --cov-report html
-	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_TRAINING) --cov $(PACKAGE_TRAINING) --cov-report html
-	open htmlcov/index.html
+tests: static-tests doc-tests coverage
 
-coverage-xml:
-	###### Running coverage analysis with JUnit xml export ######
-	$(POETRY_ARG) pytest -v --cov $(PACKAGE_INFERENCE) --junitxml=junit.xml
-	$(POETRY_ARG) pytest -v --cov $(PACKAGE_TRAINING) --junitxml=junit.xml
+## Scripts to run training
 
-## Test using a Docker Container
+train:
+	$(POETRY_ARG) python scripts/train.py
+
+## Scripts to run Docker commands
 docker-tests:
 	###### Docker build and run tests ######
-	docker build --rm --tag nlp-training:test --target tester .
-	docker run --name nlp-training --rm nlp-training:test
+	docker build --rm --tag nlp-training:test .
+	docker run --name nlp-training-test --rm nlp-training:test
