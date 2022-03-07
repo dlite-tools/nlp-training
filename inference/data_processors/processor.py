@@ -4,7 +4,7 @@ from typing import Sequence
 from nlpiper.core import Document
 
 from inference.data_processors.transformers.base import (
-    Transformer
+    BaseTransformer
 )
 
 
@@ -13,7 +13,7 @@ class Processor:
 
     train = False
 
-    def __init__(self, preprocessing: Sequence[Transformer]):
+    def __init__(self, preprocessing: Sequence[BaseTransformer]):
         """Apply preprocessing to samples.
 
         Parameters
