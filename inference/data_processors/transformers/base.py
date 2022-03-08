@@ -7,7 +7,7 @@ from abc import (
 from nlpiper.core import Document
 
 
-class Transformer(ABC):
+class BaseTransformer(ABC):
     """Class for transformers that deal with documents."""
 
     _data_aug = False

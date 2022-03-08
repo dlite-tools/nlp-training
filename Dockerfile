@@ -21,7 +21,7 @@ RUN libDeps='ffmpeg libsm6 libxext6' && \
     curl -s https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py --output /install-poetry.py && \
     POETRY_HOME=/poetry python /install-poetry.py && \
     poetry config virtualenvs.in-project true && \
-    poetry install --no-root && \
+    poetry install --no-root --extras training && \
     # TODO: Remove this line in a future release of Pytorch
     pip install setuptools==59.5.0 && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/* /tmp/* /var/tmp/*

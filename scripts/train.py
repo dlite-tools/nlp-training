@@ -58,8 +58,8 @@ if __name__ == "__main__":
         callbacks=[model_checkpoint, early_stop_callback],
         max_epochs=30,
         logger=mf_logger,
-        gpus=torch.cuda.device_count()
+        gpus=torch.cuda.device_count(),
     )
 
     trainer.fit(model_trainer, data_module)
-    trainer.test(dataloaders=data_module.test_dataloader())
+    trainer.test(datamodule=data_module)

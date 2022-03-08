@@ -33,16 +33,12 @@ static-tests:
 	###### Running documentation analysis ######
 	$(POETRY_ARG) pydocstyle $(MODULES)
 
-doc-tests:
-	###### Running documentation example as tests ######
-	$(POETRY_ARG) pytest --doctest-modules $(PYTEST_FLAGS) $(DOC_MODULES)
-
 coverage:
 	###### Running unit tests and coverage analysis ######
 	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_INFERENCE) --cov $(PACKAGE_INFERENCE) --cov-report term-missing
 	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_TRAINING) --cov $(PACKAGE_TRAINING) --cov-report term-missing
 
-tests: static-tests doc-tests coverage
+tests: static-tests coverage
 
 ## Scripts to run training
 

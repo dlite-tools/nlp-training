@@ -7,11 +7,11 @@ from nlpiper.core.document import Document
 from torchtext.vocab import Vocab, build_vocab_from_iterator
 from tqdm import tqdm
 
-from inference.data_processors.transformers.base import Transformer
+from inference.data_processors.transformers.base import BaseTransformer
 from inference.data_processors.processor import Processor
 
 
-class VocabTransform(Transformer):
+class VocabTransform(BaseTransformer):
     """Vocabulary transform."""
 
     def __init__(self, vocab: Optional[Vocab] = None):
@@ -39,7 +39,7 @@ class VocabTransform(Transformer):
         if isinstance(self.vocab, Vocab):
             for token in doc.tokens:
                 token.output = self.vocab([token.output])[0]
-            doc.output = torch.tensor([token.output for token in doc.tokens])
+            doc.output = torch.cat((torch.tensor([token.output for token in doc.tokens]), torch.tensor([2])))
             return doc
         else:
             return doc
@@ -60,7 +60,7 @@ class VocabTransform(Transformer):
             for _, text in tqdm(dataset):
                 yield [token.output for token in processor.preprocess(Document(text)).tokens]
 
-        self.vocab = build_vocab_from_iterator(yield_tokens(dataset), specials=["<unk>"])
+        self.vocab = build_vocab_from_iterator(yield_tokens(dataset), specials=["<unk>", '<pad>', '<eos>'])
         self.vocab.set_default_index(self.vocab["<unk>"])
 
     def __len__(self):

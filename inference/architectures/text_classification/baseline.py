@@ -2,6 +2,7 @@
 
 import torch
 from torch import nn
+from torch.nn import functional as F
 
 
 class BaselineModel(nn.Module):
@@ -20,22 +21,21 @@ class BaselineModel(nn.Module):
             Number of classes.
         """
         super(BaselineModel, self).__init__()
-        self.embedding = nn.EmbeddingBag(vocab_size, embed_dim, sparse=True)
+        self.embedding = nn.Embedding(vocab_size, embed_dim, sparse=True)
         self.fc = nn.Linear(embed_dim, num_class)
 
-    def forward(self, x: torch.Tensor, offsets: torch.Tensor):
+    def forward(self, x: torch.Tensor):
         """Model inference.
 
         Parameters
         ----------
         x : torch.Tensor
             Sample.
-        offsets : torch.Tensor
-            Document offsets.
 
         Returns
         -------
         torch.Tensor
         """
-        embedded = self.embedding(x, offsets)
-        return self.fc(embedded)
+        embedded = self.embedding(x)
+        pooled = F.avg_pool2d(embedded, (embedded.shape[1], 1)).squeeze(1)
+        return self.fc(pooled)
