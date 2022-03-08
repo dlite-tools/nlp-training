@@ -1,2 +1,2 @@
 """Model architecture Module."""
-from .baseline import BaselineModel
+from inference.architectures.text_classification.baseline import BaselineModel

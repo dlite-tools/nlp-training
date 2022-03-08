@@ -42,6 +42,10 @@ coverage:
 	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_INFERENCE) --cov $(PACKAGE_INFERENCE) --cov-report term-missing
 	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_TRAINING) --cov $(PACKAGE_TRAINING) --cov-report term-missing
 
+unit-tests:
+	###### Running unit tests ######
+	$(POETRY_ARG) pytest $(PYTEST_FLAGS) $(UNIT_TESTS)
+
 tests: static-tests doc-tests coverage
 
 ## Scripts to run training
