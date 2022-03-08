@@ -39,7 +39,7 @@ class TextClassificationTrainer(pl.LightningModule):
         else:
             self.loss = loss
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor) -> torch.Tensor:  # type: ignore
         """Model forward pass.
 
         Parameters
@@ -64,7 +64,7 @@ class TextClassificationTrainer(pl.LightningModule):
         scheduler = optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.1)
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: List[torch.Tensor], batch_idx: int) -> torch.Tensor:
+    def training_step(self, batch: List[torch.Tensor], batch_idx: int) -> torch.Tensor:  # type: ignore
         """Get training step.
 
         Parameters
@@ -88,7 +88,7 @@ class TextClassificationTrainer(pl.LightningModule):
         self.log('train_f1', self.train_f1, on_step=True, on_epoch=False)
         return loss
 
-    def validation_step(self, batch, batch_idx):
+    def validation_step(self, batch, batch_idx) -> torch.Tensor:  # type: ignore
         """Get validation step.
 
         Parameters
@@ -112,7 +112,7 @@ class TextClassificationTrainer(pl.LightningModule):
         self.log('valid_f1', self.valid_f1, on_epoch=True)
         return loss
 
-    def test_step(self, batch, batch_idx):
+    def test_step(self, batch, batch_idx) -> torch.Tensor:  # type: ignore
         """Get test step.
 
         Parameters
