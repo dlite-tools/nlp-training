@@ -51,6 +51,6 @@ During training will be needed to add some extra step to stack the samples and l
 model.
 
 ### How to create a Package
-Poetry is a tool for dependency management and packaging in Python. 
+[Poetry](https://python-poetry.org/) is a tool for dependency management and packaging in Python. 
 This enables us to generate a package that could be installed via Github easily, so there is no need for a private PyPi 
 server. This ensures that the only installed dependencies are strictly necessary to run inference.
