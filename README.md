@@ -7,7 +7,7 @@ reproducible and easily trackable.
 
 ## Proposal
 Our proposal consists of splitting the training project into two main modules, training and inference, allowing to
-generate a package for the inference that can be installed as an API dependency that serves the model.
+generate a package for the inference that can be installed as a dependency on the application that serves the model.
 
 ### Inference Module
 Inference Module should contain every piece of code that is strictly necessary to perform an inference, this includes:
