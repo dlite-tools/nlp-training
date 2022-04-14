@@ -23,7 +23,7 @@ together seamlessly.
 
 ### Training Module
 The training module contains everything else:
-- Data augmentation Transformations
+- Data augmentation transformations
 - Metrics
 - Loss functions
 - Dataset, Dataloaders and similar pieces of code
