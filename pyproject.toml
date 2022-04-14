@@ -22,6 +22,7 @@ training = [
 ]
 
 [tool.poetry.dev-dependencies]
+torchdata = "^0.3.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

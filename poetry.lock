@@ -984,6 +984,19 @@ python-versions = ">=3.7.0"
 typing-extensions = "*"
 
 [[package]]
+name = "torchdata"
+version = "0.3.0"
+description = "Composable data loading modules for PyTorch"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+requests = "*"
+torch = "1.11.0"
+urllib3 = ">=1.25"
+
+[[package]]
 name = "torchmetrics"
 version = "0.7.3"
 description = "PyTorch native Metrics"
@@ -1126,7 +1139,7 @@ training = ["pytorch-lightning", "tqdm", "nlpaug", "mlflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "68c8c57d73f92ea217fc7eb30491cce299d3332c5fa172ac32156f6953fa2ddb"
+content-hash = "a31a02031bc62dc69443674448d91d26591c5e52e4b82f8ce1a3aa9cf1c70d54"
 
 [metadata.files]
 absl-py = [
@@ -2051,6 +2064,9 @@ torch = [
     {file = "torch-1.11.0-cp39-cp39-win_amd64.whl", hash = "sha256:44a1d02fd20f827f0f36dc26fdcfc45e793806a6ad52769a22260655a77a4369"},
     {file = "torch-1.11.0-cp39-none-macosx_10_9_x86_64.whl", hash = "sha256:50fd9bf85c578c871c28f1cb0ace9dfc6024401c7f399b174fb0f370899f4454"},
     {file = "torch-1.11.0-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:0e48af66ad755f0f9c5f2664028a414f57c49d6adc37e77e06fe0004da4edb61"},
+]
+torchdata = [
+    {file = "torchdata-0.3.0-py3-none-any.whl", hash = "sha256:bd16fe37cd9a3dc1960503557b5d556251e1f32b9078ed91a27dce518eb328d6"},
 ]
 torchmetrics = [
     {file = "torchmetrics-0.7.3-py3-none-any.whl", hash = "sha256:2eed83d09058e6141b132dd2ee5136549e5d6faff09a8fb13d3a606b6c65cb86"},
