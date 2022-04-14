@@ -27,7 +27,7 @@ The training module contains everything else:
 - Metrics
 - Loss functions
 - Dataset, Dataloaders and similar pieces of code
-- Code used to train the model, in our case `Trainer`.
+- Code used to train the model, in our case `Trainer` class.
 
 This module should also have tests to ensure that the pieces can work together, confirming that the training module is 
 fully-functional and behaves as expected.
