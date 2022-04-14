@@ -22,7 +22,7 @@ should also include testing sequential data transformations, similar to producti
 together seamlessly.
 
 ### Training Module
-Training Module contains everything else:
+The training module contains everything else:
 - Data augmentation Transformations
 - Metrics
 - Loss functions
