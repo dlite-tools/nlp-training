@@ -1,7 +1,8 @@
 # NLP-Training
 ## Problem Definition
 Training a production model is not trivial, the inference during training and production should have the closest 
-behaviour possible such as the pre and post-processing transformations. During training, the experiments should be
+behaviour possible such as the pre and post-processing transformations. These transformations should be solid and fully
+tested to guarantee that it behaves as expected. During training, the experiments should also be
 reproducible and easily trackable.
 
 ## Proposal
@@ -11,7 +12,7 @@ generate a package for the inference that can be installed as an API dependency 
 ### Inference Module
 Inference Module should contain every piece of code that is strictly necessary to perform an inference, this includes:
 - Architectures
-- Processor that given an input applies pre-processing and post-processing transformations.
+- Processor (commonly also known as compose) that given an input applies pre-processing and post-processing transformations.
 - Pre-Processing Transformations
 - Pos-Processing Transformations
 - Utility functions (e.g. load checkpoint into an initiated architecture)
