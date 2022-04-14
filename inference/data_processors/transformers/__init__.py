@@ -1,0 +1,1 @@
+from inference.data_processors.transformers.base import BaseTransformer

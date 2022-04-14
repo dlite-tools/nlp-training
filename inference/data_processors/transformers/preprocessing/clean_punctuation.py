@@ -3,7 +3,7 @@ from string import punctuation
 
 from nlpiper.core import Document
 
-from inference.data_processors.transformers.base import BaseTransformer
+from inference.data_processors.transformers import BaseTransformer
 
 
 class CleanPunctuation(BaseTransformer):

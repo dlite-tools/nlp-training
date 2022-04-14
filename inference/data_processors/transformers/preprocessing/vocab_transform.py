@@ -7,7 +7,7 @@ from nlpiper.core.document import Document
 from torchtext.vocab import Vocab, build_vocab_from_iterator
 from tqdm import tqdm
 
-from inference.data_processors.transformers.base import BaseTransformer
+from inference.data_processors.transformers import BaseTransformer
 from inference.data_processors.processor import Processor
 
 
