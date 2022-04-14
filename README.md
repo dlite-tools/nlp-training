@@ -41,14 +41,26 @@ reproducibility and is already production-ready if it goes well.
 
 ### Using Pydantic Model
 #### Advantages
-Sometimes data transformation previously and pos-inference are pretty complicated. Using Pydantic Model can make our 
-problem easier by ensuring that some tasks and saved for later, guaranteeing that a variable is of type x etc.
+On an ML project life cycle, the transformations applied to data keep suffer changes, so it is important to keep the 
+track of all the intermediate steps. This is where Pydantic Model comes in. It is a dataclass model that can be used 
+to store the intermediate steps of the pipeline, with automatic type checking and validation, making the pipeline 
+transformation easier to follow, maintain and debug.
 
-For example, in this project, we use a Pydantic Model `Document`, which contains information around what has been changed.
+e.g. In text classification, we can have several parameters to store the raw input information, data transformations 
+before the inference, the inference and post-processing transformations.
+´´´python
+class TextSample(BaseModel):
+    raw_text: str
+    pre_processed_text: List[str]
+    models_input: np.ndarray
+    inference_result: np.ndarray
+    post_processed_text: str
+´´´
 
 #### Constrains
-During training will be needed to add some extra step to stack the samples and labels since each sample is linked to a 
-model.
+For training a model we need a batch of data, this data must be represented as an array. Since our data currently is stored
+in a Pydantic object, and each object represents only one sample, we need an extra step to aggregate the data into a 
+unique array. For this we need to get, according to the previous example, the ``models_input`` and stack them.
 
 ### How to create a Package
 [Poetry](https://python-poetry.org/) is a tool for dependency management and packaging in Python. 
