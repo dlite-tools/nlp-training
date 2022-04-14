@@ -42,9 +42,9 @@ reproducibility and is already production-ready if it goes well.
 ### Using Pydantic Model
 #### Advantages
 On an ML project life cycle, the transformations applied to data keep suffer changes, so it is important to keep the 
-track of all the intermediate steps. This is where Pydantic Model comes in. It is a dataclass model that can be used 
-to store the intermediate steps of the pipeline, with automatic type checking and validation, making the pipeline 
-transformation easier to follow, maintain and debug.
+track of all the intermediate steps. This is where [Pydantic](https://pydantic-docs.helpmanual.io/) Model comes in.
+It is a dataclass model that can be used to store the intermediate steps of the pipeline, with automatic type checking
+and validation, making the pipeline transformation easier to follow, maintain and debug.
 
 e.g. In text classification, we can have several parameters to store the raw input information, data transformations 
 before the inference, the inference and post-processing transformations.
@@ -63,6 +63,6 @@ in a Pydantic object, and each object represents only one sample, we need an ext
 unique array. For this we need to get, according to the previous example, the ``models_input`` and stack them.
 
 ### How to create a Package
-[Poetry](https://python-poetry.org/) is a tool for dependency management and packaging in Python. 
-This enables us to generate a package that could be installed via Github easily, so there is no need for a private PyPi 
-server. This ensures that the only installed dependencies are strictly necessary to run inference.
+[Poetry](https://python-poetry.org/) is a tool for dependency management and packaging in Python.
+This enables us to generate a package, which could be installed via Github easily. This ensures that the only installed
+dependencies are strictly necessary to run inference.
