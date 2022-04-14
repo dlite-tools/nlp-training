@@ -525,6 +525,7 @@ python-versions = ">=3.7,<4.0"
 [package.dependencies]
 nltk = {version = ">=3,<4", optional = true, markers = "extra == \"nltk\" or extra == \"all\""}
 pydantic = ">=1,<2"
+sacremoses = {version = ">=0,<1", optional = true, markers = "extra == \"sacremoses\" or extra == \"all\""}
 torchtext = {version = ">=0,<1", optional = true, markers = "extra == \"torchtext\" or extra == \"all\""}
 
 [package.extras]
@@ -841,6 +842,21 @@ python-versions = ">=3.6,<4"
 pyasn1 = ">=0.1.3"
 
 [[package]]
+name = "sacremoses"
+version = "0.0.49"
+description = "SacreMoses"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+click = "*"
+joblib = "*"
+regex = "*"
+six = "*"
+tqdm = "*"
+
+[[package]]
 name = "scipy"
 version = "1.6.1"
 description = "SciPy: Scientific Library for Python"
@@ -856,7 +872,7 @@ name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
@@ -1110,7 +1126,7 @@ training = ["pytorch-lightning", "tqdm", "nlpaug", "mlflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "912e4e12879e2cd3498551b9f10ba699fccb36bccb2cede19fb31da9f21df9ab"
+content-hash = "68c8c57d73f92ea217fc7eb30491cce299d3332c5fa172ac32156f6953fa2ddb"
 
 [metadata.files]
 absl-py = [
@@ -1924,6 +1940,10 @@ requests-oauthlib = [
 rsa = [
     {file = "rsa-4.8-py3-none-any.whl", hash = "sha256:95c5d300c4e879ee69708c428ba566c59478fd653cc3a22243eeb8ed846950bb"},
     {file = "rsa-4.8.tar.gz", hash = "sha256:5c6bd9dc7a543b7fe4304a631f8a8a3b674e2bbfc49c2ae96200cdbe55df6b17"},
+]
+sacremoses = [
+    {file = "sacremoses-0.0.49-py3-none-any.whl", hash = "sha256:33ca6d4e125271b9201cc7fdf7f03f3ffdd358ee6dd8079c0432811d82da5377"},
+    {file = "sacremoses-0.0.49.tar.gz", hash = "sha256:c2ecd3a50d1c09a26253ad84b0b89e9e3a28a023455b72a2197cfeab27ff5141"},
 ]
 scipy = [
     {file = "scipy-1.6.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:a15a1f3fc0abff33e792d6049161b7795909b40b97c6cc2934ed54384017ab76"},
