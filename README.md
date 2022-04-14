@@ -10,7 +10,7 @@ Our proposal consists of splitting the training project into two main modules, t
 generate a package for the inference that can be installed as a dependency on the application that serves the model.
 
 ### Inference Module
-Inference Module should contain every piece of code that is strictly necessary to perform an inference, this includes:
+The inference module should contain every piece of code that is strictly necessary to perform an inference, this includes:
 - Architectures
 - Processor (commonly also known as compose) that given an input applies pre-processing and post-processing transformations.
 - Pre-Processing Transformations
