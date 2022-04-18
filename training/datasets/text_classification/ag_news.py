@@ -87,7 +87,5 @@ class AGNewsDataModule(pl.LightningDataModule):
             doc = self.processor.preprocess(Document(text))
             offsets.append(len(doc.output))
             docs.extend(doc.output)
-
-        # docs = torch.cat(docs)  # torch.nn.utils.rnn.pad_sequence(docs, batch_first=True, padding_value=1)
         offsets = torch.tensor(offsets, dtype=torch.long)[:-1].cumsum(dim=0)
         return torch.tensor(labels, dtype=torch.int64), torch.tensor(docs, dtype=torch.int64), offsets
