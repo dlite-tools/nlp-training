@@ -24,6 +24,7 @@ class TextClassificationTrainer(pl.LightningModule):
             Loss function.
         """
         super().__init__()
+        self.save_hyperparameters()
         self.num_class = num_class
         self.model = model
         self.train_acc = torchmetrics.Accuracy()
@@ -62,7 +63,7 @@ class TextClassificationTrainer(pl.LightningModule):
         -------
         optimizer for pytorch lighting.
         """
-        optimizer = optim.SGD(self.parameters(), lr=0.01)
+        optimizer = optim.SGD(self.parameters(), lr=5)
         scheduler = optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.1)
         return [optimizer], [scheduler]
 

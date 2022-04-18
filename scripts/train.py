@@ -8,7 +8,8 @@ from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import MLFlowLogger
 from pytorch_lightning.callbacks import (
     EarlyStopping,
-    ModelCheckpoint
+    ModelCheckpoint,
+    LearningRateMonitor
 )
 
 from inference.architectures.text_classification import BaselineModel
@@ -23,10 +24,14 @@ from training.datasets.text_classification import AGNewsDataModule
 
 if __name__ == "__main__":
     NUMBER_CLASSES = 4
-    EMBED_DIM = 100
+    EMBED_DIM = 64
+    BATCH_SIZE = 64
+    NUM_WORKERS = 8
 
     model_checkpoint = ModelCheckpoint(monitor="valid_loss", mode="min", save_weights_only=True)
     early_stop_callback = EarlyStopping(monitor="valid_loss", mode="min", patience=4)
+    learning_rate_monitor = LearningRateMonitor()
+
     mf_logger = MLFlowLogger(
         experiment_name="AG News - Text Classification",
         run_name="Baseline",
@@ -38,13 +43,14 @@ if __name__ == "__main__":
         SentenceAugmentation(),
         NLPiperIntegration(pipeline=nlpiper.core.Compose([
             nlpiper.transformers.cleaners.CleanPunctuation(),
-            nlpiper.transformers.tokenizers.MosesTokenizer()
+            nlpiper.transformers.tokenizers.BasicTokenizer(),
+            nlpiper.transformers.normalizers.CaseTokens(),
         ])),
         vocab
     ]
     processor = Processor(preprocessing=preprocessing)
 
-    data_module = AGNewsDataModule(processor=processor)
+    data_module = AGNewsDataModule(processor=processor, num_workers=NUM_WORKERS, batch_size=BATCH_SIZE)
 
     vocab.build_vocab(processor, AG_NEWS(split='train'))
     model = BaselineModel(vocab_size=len(vocab), embed_dim=EMBED_DIM, num_class=NUMBER_CLASSES)
@@ -55,8 +61,8 @@ if __name__ == "__main__":
     )
 
     trainer = Trainer(
-        callbacks=[model_checkpoint, early_stop_callback],
-        max_epochs=30,
+        callbacks=[model_checkpoint, early_stop_callback, learning_rate_monitor],
+        max_epochs=10,
         logger=mf_logger,
         gpus=torch.cuda.device_count(),
     )
