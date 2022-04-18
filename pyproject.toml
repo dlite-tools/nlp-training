@@ -4,6 +4,8 @@ version = "0.1.0"
 description = "NLP training repository."
 authors = ["Carlos Alves, Daniel Ferrari and Tomás Osório"]
 
+packages = [{ include = "inference" }]
+
 [tool.poetry.dependencies]
 python = "^3.7.1"
 nlpiper = {extras = ["nltk", "sacremoses", "torchtext"], version = "^0.3.1"}
