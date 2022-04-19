@@ -46,3 +46,19 @@ class BaselineModel(nn.Module):
         """
         embedded = self.embedding(x, offsets)
         return self.fc(embedded)
+
+    def load_from_checkpoint(self, checkpoint_path: str):
+        """Load model from checkpoint into memory.
+
+        Parameters
+        ----------
+        checkpoint_path : str
+            Checkpoint path
+        """
+        weights = torch.load(checkpoint_path, map_location='cpu')
+        if any('model.' in layer for layer in list(weights['state_dict'].keys())):
+            weights = {key.replace('model.', ''): value for (key, value) in weights['state_dict'].items()}
+        else:
+            weights = weights['state_dict']
+
+        self.load_state_dict(weights)  # type:ignore
