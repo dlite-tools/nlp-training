@@ -26,6 +26,10 @@ training = [
 ]
 
 [tool.poetry.dev-dependencies]
+mypy = "^0.942"
+pytest = "^7.1.1"
+flake8 = "^4.0.1"
+pydocstyle = "^6.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
