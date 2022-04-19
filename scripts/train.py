@@ -1,5 +1,6 @@
 """Training script."""
 import os
+import tempfile
 
 import nlpiper
 import torch
@@ -35,12 +36,10 @@ if __name__ == "__main__":
     mf_logger = MLFlowLogger(
         experiment_name="AG News - Text Classification",
         run_name="Baseline",
-        tracking_uri=os.getenv('MLFLOW_URI')
     )
 
     vocab = VocabTransform()
     preprocessing = [
-        SentenceAugmentation(),
         NLPiperIntegration(pipeline=nlpiper.core.Compose([
             nlpiper.transformers.cleaners.CleanPunctuation(),
             nlpiper.transformers.tokenizers.BasicTokenizer(),
@@ -53,6 +52,13 @@ if __name__ == "__main__":
     data_module = AGNewsDataModule(processor=processor, num_workers=NUM_WORKERS, batch_size=BATCH_SIZE)
 
     vocab.build_vocab(processor, AG_NEWS(split='train'))
+    mf_logger.experiment.log_artifact(mf_logger.run_id, __file__)
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_file = os.path.join(temp_dir, 'vocab.pth')
+        torch.save(vocab.vocab, temp_file)
+        mf_logger.experiment.log_artifact(mf_logger.run_id, temp_file)
+
     model = BaselineModel(vocab_size=len(vocab), embed_dim=EMBED_DIM, num_class=NUMBER_CLASSES)
 
     model_trainer = TextClassificationTrainer(
