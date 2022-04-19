@@ -14,7 +14,7 @@ from inference.data_processors.processor import Processor
 class AGNewsDataModule(pl.LightningDataModule):
     """Generate data loaders for training, validation and testing."""
 
-    def __init__(self, processor: Processor, data_dir: str = '.data', batch_size: int = 32):
+    def __init__(self, processor: Processor, data_dir: str = '.data', batch_size: int = 32, num_workers: int = 8):
         """Field recognition DataModule.
 
         Parameters
@@ -25,11 +25,14 @@ class AGNewsDataModule(pl.LightningDataModule):
             Directory path for the dataset.
         batch_size: int
             Batch size.
+        num_workers: int
+            Number of workers for DataLoader.
         """
         super().__init__()
         self.processor = processor
         self.data_dir = data_dir
         self.batch_size = batch_size
+        self.num_workers = num_workers
         self.setup()
 
     def setup(self, stage: Optional[str] = None):
@@ -47,18 +50,20 @@ class AGNewsDataModule(pl.LightningDataModule):
 
     def train_dataloader(self):
         """Apply data loader for training data."""
-        return DataLoader(self.train_dataset, self.batch_size, shuffle=True,
+        return DataLoader(self.train_dataset, self.batch_size, shuffle=True, num_workers=self.num_workers,
                           collate_fn=lambda batch: self.generate_batch(batch, True))
 
     def val_dataloader(self):
         """Apply data loader for validation data."""
-        return DataLoader(self.val_dataset, self.batch_size, collate_fn=self.generate_batch)
+        return DataLoader(self.val_dataset, self.batch_size, num_workers=self.num_workers,
+                          collate_fn=self.generate_batch)
 
     def test_dataloader(self):
         """Apply data loader for testing data."""
-        return DataLoader(self.test_dataset, self.batch_size, collate_fn=self.generate_batch)
+        return DataLoader(self.test_dataset, self.batch_size, num_workers=self.num_workers,
+                          collate_fn=self.generate_batch)
 
-    def generate_batch(self, batch: Any, train: bool = False) -> Tuple[torch.Tensor, torch.Tensor]:
+    def generate_batch(self, batch: Any, train: bool = False) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Generate batch.
 
         Parameters
@@ -70,16 +75,17 @@ class AGNewsDataModule(pl.LightningDataModule):
 
         Returns
         -------
-        Tuple[torch.Tensor, torch.Tensor]
+        Tuple[torch.Tensor, torch.Tensor, torch.Tensor]
         """
         self.processor.train = train
         labels, texts = zip(*batch)
         docs = []
+        offsets = [0]
         labels = [label - 1 for label in labels]
 
         for text in texts:
             doc = self.processor.preprocess(Document(text))
-            docs.append(doc.output)
-
-        docs = torch.nn.utils.rnn.pad_sequence(docs, batch_first=True, padding_value=1)
-        return torch.tensor(labels), docs
+            offsets.append(len(doc.output))
+            docs.extend(doc.output)
+        offsets = torch.tensor(offsets[:-1], dtype=torch.long).cumsum(dim=0)
+        return torch.tensor(labels, dtype=torch.int64), torch.tensor(docs, dtype=torch.int64), offsets

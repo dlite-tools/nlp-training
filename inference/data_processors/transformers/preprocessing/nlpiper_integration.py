@@ -3,7 +3,7 @@
 from nlpiper.core.document import Document
 from nlpiper.core.composition import Compose
 
-from inference.data_processors.transformers.base import BaseTransformer
+from inference.data_processors.transformers import BaseTransformer
 
 
 class NLPiperIntegration(BaseTransformer):

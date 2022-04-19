@@ -4,38 +4,32 @@ version = "0.1.0"
 description = "NLP training repository."
 authors = ["Carlos Alves, Daniel Ferrari and Tomás Osório"]
 
+packages = [{ include = "inference" }]
+
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7.1"
+nlpiper = {extras = ["nltk", "sacremoses", "torchtext"], version = "^0.3.1"}
 
-nlpiper = "^0.2.1"
-sacremoses = "^0.0.47"
-setuptools = "59.5.0"
-torchtext = "^0.11.2"
-torch = "^1.10.2"
-
-mlflow = { version = "^1.24.0", optional = true }
+pytorch-lightning = { version = "^1.6.1", optional = true }
+tqdm = { version = "^4.64.0", optional = true }
 nlpaug = { version = "^1.1.10", optional = true }
-nltk = { version = "^3.7", optional = true }
-pytorch-lightning = { version = "^1.5.10", optional = true }
-torchmetrics = { version = "^0.7.2", optional = true }
-tqdm = { version = "^4.63.0", optional = true }
+mlflow = { version = "^1.25.1", optional = true }
+torchdata = { version = "^0.3.0", optional = true }
 
 [tool.poetry.extras]
 training = [
-    "mlflow",
-    "nlpaug",
-    "nltk",
     "pytorch-lightning",
-    "torchmetrics",
     "tqdm",
+    "nlpaug",
+    "mlflow",
+    "torchdata"
 ]
 
 [tool.poetry.dev-dependencies]
-pydocstyle = "^6.1.1"
-pytest = "^7.0.1"
-pytest-cov = "^3.0.0"
-mypy = "^0.931"
+mypy = "^0.942"
+pytest = "^7.1.1"
 flake8 = "^4.0.1"
+pydocstyle = "^6.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
