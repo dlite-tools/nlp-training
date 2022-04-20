@@ -6,7 +6,6 @@ import torch
 from torch.utils.data import DataLoader, random_split
 from torchtext.datasets import AG_NEWS
 from torchtext.data.functional import to_map_style_dataset
-from nlpiper.core import Document
 
 from inference.data_processors.processor import Processor
 
@@ -84,8 +83,8 @@ class AGNewsDataModule(pl.LightningDataModule):
         labels = [label - 1 for label in labels]
 
         for text in texts:
-            doc = self.processor.preprocess(Document(text))
-            offsets.append(len(doc.output))
-            docs.extend(doc.output)
+            text = self.processor.preprocess(text)
+            offsets.append(len(text))
+            docs.extend(text)
         offsets = torch.tensor(offsets[:-1], dtype=torch.long).cumsum(dim=0)
         return torch.tensor(labels, dtype=torch.int64), torch.tensor(docs, dtype=torch.int64), offsets

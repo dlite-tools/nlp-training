@@ -2,7 +2,6 @@
 
 import nltk
 import nlpaug.augmenter.word as naw
-from nlpiper.core import Document
 
 from inference.data_processors.transformers.base import BaseTransformer
 
@@ -17,17 +16,5 @@ class SentenceAugmentation(BaseTransformer):
 
     aug = naw.SynonymAug()
 
-    def __call__(self, doc: Document) -> Document:
-        """Sentence Augmentation.
-
-        Parameters
-        ----------
-        doc : Document
-            Pydantic document object with all document metadata.
-
-        Returns
-        -------
-        Document
-        """
-        doc.cleaned = self.aug.augment(doc.cleaned)
-        return doc
+    def __call__(self, text: str) -> str:
+        return self.aug.augment(text)

@@ -1,39 +1,18 @@
 """Remove punctuation from text."""
 from string import punctuation
 
-from nlpiper.core import Document
-
 from inference.data_processors.transformers import BaseTransformer
 
 
 class CleanPunctuation(BaseTransformer):
-    """Remove punctuation from a document.
 
-    Callable arguments:
-
-    Args:
-        doc (Document): document to be cleaned.
-
-    Returns:
-        Document without punctuation or None if `inplace=True`.
-
-    Example:
-        >>> doc = Document("Document without punctuation!")
-        >>> cleaner = CleanPunctuation()
-        >>> out = cleaner(doc)
-        >>> out.cleaned
-        "Document without punctuation"
-    """
-
-    def __call__(self, doc: Document) -> Document:
+    def __call__(self, text: str) -> str:
         """Remove punctuation from a document.
 
         Args:
-            doc (Document): document to be cleaned.
+            text (str): text to be cleaned.
 
-        Returns: Document
+        Returns: str
         """
 
-        doc.cleaned = doc.cleaned.translate(str.maketrans('', '', punctuation))
-
-        return doc
+        return text.translate(str.maketrans('', '', punctuation))
