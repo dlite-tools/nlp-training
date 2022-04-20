@@ -36,7 +36,7 @@ class VocabTransform(BaseTransformer):
         list of int
         """
         if isinstance(self.vocab, Vocab):
-            return torch.cat((torch.tensor([self.vocab([token])[0] for token in text]), torch.tensor([2])))
+            return torch.tensor([self.vocab([token])[0] for token in text])
         else:
             return text  # type: ignore
 
