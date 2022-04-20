@@ -31,9 +31,9 @@ class TextClassificationTrainer(pl.LightningModule):
         self.valid_acc = torchmetrics.Accuracy()
         self.test_acc = torchmetrics.Accuracy()
 
-        self.train_f1 = torchmetrics.F1(num_classes=self.num_class, average="macro")
-        self.valid_f1 = torchmetrics.F1(num_classes=self.num_class, average="macro")
-        self.test_f1 = torchmetrics.F1(num_classes=self.num_class, average="macro")
+        self.train_f1 = torchmetrics.F1Score(num_classes=self.num_class, average="macro")
+        self.valid_f1 = torchmetrics.F1Score(num_classes=self.num_class, average="macro")
+        self.test_f1 = torchmetrics.F1Score(num_classes=self.num_class, average="macro")
 
         if loss is None:
             self.loss = nn.CrossEntropyLoss()
