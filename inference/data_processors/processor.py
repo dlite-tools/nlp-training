@@ -1,7 +1,5 @@
 """Processor Module."""
-from typing import Sequence
-
-from nlpiper.core import Document
+from typing import Any, Sequence
 
 from inference.data_processors.transformers.base import (
     BaseTransformer
@@ -23,23 +21,23 @@ class Processor:
         """
         self.preprocessing = preprocessing
 
-    def preprocess(self, doc: Document) -> Document:
+    def preprocess(self, text: str) -> Any:
         """Apply pre-processing to samples.
 
         Parameters
         ----------
-        doc: Document
-            Pydantic document object with all document metadata.
+        text: str
+            Sample to be preprocessed.
 
         Returns
         -------
-         invoice
-            Pydantic document object updated with `preprocess` applied.
+         str
+            Preprocessed sample.
         """
         for transform in self.preprocessing:
             if transform._data_aug and not self.train:  # skip data augmentation if not in training mode
                 continue
 
-            doc = transform(doc)
+            text = transform(text)
 
-        return doc
+        return text

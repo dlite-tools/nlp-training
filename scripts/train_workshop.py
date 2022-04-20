@@ -2,7 +2,6 @@
 import os
 import tempfile
 
-import nlpiper
 import torch
 from torchtext.datasets import AG_NEWS
 from pytorch_lightning import Trainer
@@ -14,9 +13,9 @@ from pytorch_lightning.callbacks import (
 )
 
 from inference.architectures.text_classification import BaselineModel
+from inference.data_processors.transformers import BaseTransformer
 from inference.data_processors.processor import Processor
 from inference.data_processors.transformers.preprocessing import (
-    NLPiperIntegration,
     VocabTransform
 )
 from training.trainer import TextClassificationTrainer
@@ -38,12 +37,13 @@ if __name__ == "__main__":
     )
 
     vocab = VocabTransform()
+
+    class Tokenize(BaseTransformer):
+        def __call__(self, text):
+            return text.split(' ')
+
     preprocessing = [
-        NLPiperIntegration(pipeline=nlpiper.core.Compose([
-            nlpiper.transformers.cleaners.CleanPunctuation(),
-            nlpiper.transformers.tokenizers.BasicTokenizer(),
-            nlpiper.transformers.normalizers.CaseTokens(),
-        ])),
+        Tokenize(),
         vocab
     ]
     processor = Processor(preprocessing=preprocessing)
@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     trainer = Trainer(
         callbacks=[model_checkpoint, early_stop_callback, learning_rate_monitor],
-        max_epochs=10,
+        max_epochs=5,
         logger=mf_logger,
         gpus=torch.cuda.device_count(),
     )

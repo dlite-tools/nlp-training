@@ -4,8 +4,6 @@ from abc import (
     abstractmethod
 )
 
-from nlpiper.core import Document
-
 
 class BaseTransformer(ABC):
     """Class for transformers that deal with documents."""
@@ -13,6 +11,6 @@ class BaseTransformer(ABC):
     _data_aug = False
 
     @abstractmethod
-    def __call__(self, doc: Document) -> Document:
+    def __call__(self, text: str) -> str:
         """Implement method."""
         pass

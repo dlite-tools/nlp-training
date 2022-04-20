@@ -1,4 +1,5 @@
 """NLPiper integration for preprocessing documents."""
+from typing import Any
 
 from nlpiper.core.document import Document
 from nlpiper.core.composition import Compose
@@ -19,19 +20,24 @@ class NLPiperIntegration(BaseTransformer):
         """
         self.pipeline = pipeline
 
-    def __call__(self, doc: Document) -> Document:
+    def __call__(self, text: str) -> Any:
         """Apply pipeline on Document.
 
         Parameters
         ----------
-        doc : Document
-            Pydantic document object with all document metadata.
+        text : str
+            text to be preprocessed.
 
         Returns
         -------
-        Document
+        Preprocessed text.
         """
-        doc = self.pipeline(doc)
-        for token in doc.tokens:
-            token.output = token.cleaned
-        return doc
+        doc = self.pipeline(Document(text))
+        if doc.tokens is not None:
+            for token in doc.tokens:
+                token.output = token.cleaned
+
+            doc.output = [token.output for token in doc.tokens]
+        else:
+            doc.output = doc.cleaned
+        return doc.output

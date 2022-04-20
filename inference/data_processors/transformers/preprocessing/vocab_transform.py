@@ -1,9 +1,8 @@
 """Vocabulary Transform."""
 
-from typing import Iterable, Optional
+from typing import Iterable, Optional, List
 
 import torch
-from nlpiper.core.document import Document
 from torchtext.vocab import Vocab, build_vocab_from_iterator
 from tqdm import tqdm
 
@@ -24,25 +23,22 @@ class VocabTransform(BaseTransformer):
         """
         self.vocab = vocab
 
-    def __call__(self, doc: Document) -> Document:
+    def __call__(self, text: List[str]) -> torch.Tensor:  # type: ignore
         """Apply pipeline on Document.
 
         Parameters
         ----------
-        doc : Document
-        Pydantic document object with all document metadata.
+        text : List[str]
+            List of token to be preprocessed.
 
         Returns
         -------
-        Document
+        list of int
         """
         if isinstance(self.vocab, Vocab):
-            for token in doc.tokens:
-                token.output = self.vocab([token.output])[0]
-            doc.output = torch.cat((torch.tensor([token.output for token in doc.tokens]), torch.tensor([2])))
-            return doc
+            return torch.tensor([self.vocab([token])[0] for token in text])
         else:
-            return doc
+            return text  # type: ignore
 
     def build_vocab(self, processor: Processor, dataset: Iterable):
         """Build Vocabulary.
@@ -58,7 +54,7 @@ class VocabTransform(BaseTransformer):
 
         def yield_tokens(dataset: Iterable):
             for _, text in tqdm(dataset):
-                yield [token.output for token in processor.preprocess(Document(text)).tokens]
+                yield processor.preprocess(text)
 
         self.vocab = build_vocab_from_iterator(yield_tokens(dataset), specials=["<unk>", '<pad>', '<eos>'])
         self.vocab.set_default_index(self.vocab["<unk>"])

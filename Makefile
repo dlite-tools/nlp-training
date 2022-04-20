@@ -30,9 +30,6 @@ static-tests:
 	$(POETRY_ARG) mypy $(PACKAGE_INFERENCE)
 	$(POETRY_ARG) mypy $(PACKAGE_TRAINING)
 
-	###### Running documentation analysis ######
-	$(POETRY_ARG) pydocstyle $(MODULES)
-
 coverage:
 	###### Running unit tests and coverage analysis ######
 	$(POETRY_ARG) pytest $(PYTEST_FLAGS) tests/unit/$(PACKAGE_INFERENCE) --cov $(PACKAGE_INFERENCE) --cov-report term-missing
