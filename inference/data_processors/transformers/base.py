@@ -17,12 +17,3 @@ class BaseTransformer(ABC):
     def __call__(self, text: str) -> str:
         """Implement method."""
         pass
-
-
-class BasePostProcessing(ABC):
-    """Class for transformers that deal with inference."""
-
-    @abstractmethod
-    def __call__(self, inference: torch.Tensor) -> Tuple[str, float]:
-        """Implement method."""
-        pass
