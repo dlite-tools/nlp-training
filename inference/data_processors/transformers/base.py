@@ -3,9 +3,6 @@ from abc import (
     ABC,
     abstractmethod
 )
-from typing import Tuple
-
-import torch
 
 
 class BaseTransformer(ABC):
