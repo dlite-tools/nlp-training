@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nlp-training"
-version = "0.0.3"
+version = "0.0.4"
 description = "NLP training repository."
 authors = ["Carlos Alves, Daniel Ferrari and Tomás Osório"]
 
